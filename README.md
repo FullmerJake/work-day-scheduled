@@ -9,6 +9,9 @@ Busy Employee wants a daily planner to add important events to, and manage time 
 - Clicking on save button for that time block saves the text for that even in local storage.
 - Saved events persist upon page refresh. 
 
+## Mock-Up Animation
+https://courses.bootcampspot.com/courses/228/files/155367/download
 
-### Contributors
+
+#### Contributors
 - Jake Fullmer
