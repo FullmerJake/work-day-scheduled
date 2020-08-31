@@ -54,6 +54,50 @@ var myDay = [
         time: "17",
         task: ""
     },
+  
+  // The following is for testing purposes. Uncomment to be able to test after 5pm daily
+    // {
+    //     id: "9",
+    //     hour: "6pm",
+    //     time: "18",
+    //     task: ""
+    // },
+    // {
+    //     id: "10",
+    //     hour: "7pm",
+    //     time: "19",
+    //     task: ""
+    // },
+    // {
+    //     id: "11",
+    //     hour: "8pm",
+    //     time: "20",
+    //     task: ""
+    // },
+    // {
+    //     id: "12",
+    //     hour: "9pm",
+    //     time: "21",
+    //     task: ""
+    // },
+    // {
+    //     id: "13",
+    //     hour: "10pm",
+    //     time: "22",
+    //     task: ""
+    // },
+    // {
+    //     id: "14",
+    //     hour: "11pm",
+    //     time: "23",
+    //     task: ""
+    // },
+    // {
+    //     id: "15",
+    //     hour: "12am",
+    //     time: "24",
+    //     task: ""
+    // },
     
 ]
 
@@ -71,7 +115,7 @@ var saveTasks = function() {
 // sets any data in localStorage to the view
 var displayTasks = function() {
     myDay.forEach(function (_thisHour) {
-        $(this).val(_thisHour.task);
+        $(`#${_thisHour.id}`).val(_thisHour.task);
     })
 }
 
@@ -79,12 +123,14 @@ var displayTasks = function() {
 var init = function() {
     var storedDay = JSON.parse(localStorage.getItem("myDay"));
 
-    if (!storedDay){
-        storedDay = myDay;
+    if (storedDay){
+        myDay = storedDay;
     }
     else{
         displayTasks();
     }
+    saveTasks();
+    displayTasks();
 }
 
 // loads header date
@@ -141,11 +187,10 @@ myDay.forEach(function(thisHour) {
 // loads any existing localstorage data after components created
 init();
 
-
 // saves data to be used in localStorage
 $(".saveBtn").on("click", function(event) {
     event.preventDefault();
-    var updatedTask = $(this).siblings(".description").children(".future").attr("id");
-    myDay[updatedTask].task = $(this).siblings(".description").children(".future").val();
+    var updatedTask = $(this).siblings(".description").children(".future, .present").attr("id");
+    myDay[updatedTask].task = $(this).siblings(".description").children(".future, .present").val();
     saveTasks();
 })
