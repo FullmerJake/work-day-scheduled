@@ -2,104 +2,104 @@
 var myDay = [
     {
         id: "0",
-        hour: "09",
+        hour: "9",
         time: "09",
         meridiem: "am",
-        reminder: ""
+        task: ""
     },
     {
         id: "1",
         hour: "10",
         time: "10",
         meridiem: "am",
-        reminder: ""
+        task: ""
     },
     {
         id: "2",
         hour: "11",
         time: "11",
         meridiem: "am",
-        reminder: ""
+        task: ""
     },
     {
         id: "3",
         hour: "12",
         time: "12",
         meridiem: "pm",
-        reminder: ""
+        task: ""
     },
     {
         id: "4",
-        hour: "01",
+        hour: "1",
         time: "13",
         meridiem: "pm",
-        reminder: ""
+        task: ""
     },
     {
         id: "5",
-        hour: "02",
+        hour: "2",
         time: "14",
         meridiem: "pm",
-        reminder: ""
+        task: ""
     },
     {
         id: "6",
-        hour: "03",
+        hour: "3",
         time: "15",
         meridiem: "pm",
-        reminder: ""
+        task: ""
     },
     {
         id: "7",
-        hour: "04",
+        hour: "4",
         time: "16",
         meridiem: "pm",
-        reminder: ""
+        task: ""
     },
     {
         id: "8",
-        hour: "05",
+        hour: "5",
         time: "17",
         meridiem: "pm",
-        reminder: ""
+        task: ""
     },
     
 ]
 
 // gets data for the header date
-function getHeaderDate() {
+var getHeaderDate = function() {
     var currentHeaderDate = moment().format('dddd, MMMM Do');
     $("#currentDay").text(currentHeaderDate);
 }
 
 // saves data to localStorage
-function saveReminders() {
+var saveTasks = function() {
     localStorage.setItem("myDay", JSON.stringify(myDay));
 }
 
 // sets any data in localStorage to the view
-function displayReminders() {
+var displayTasks = function() {
     myDay.forEach(function (_thisHour) {
-        $(`#${_thisHour.id}`).val(_thisHour.reminder);
+        $(this).val(_thisHour.task);
     })
 }
 
 // sets any existing localStorage data to the view if it exists
-function init() {
+var init = function() {
     var storedDay = JSON.parse(localStorage.getItem("myDay"));
 
     if (storedDay) {
         myDay = storedDay;
     }
 
-    saveReminders();
-    displayReminders();
+    saveTasks();
+    displayTasks();
 }
 
 // loads header date
 getHeaderDate();
 
-// creates the visuals for the scheduler body
+// creates styled body
 myDay.forEach(function(thisHour) {
     // creates timeblocks row
     var hourRow = $("<form>").attr({
@@ -111,17 +111,18 @@ myDay.forEach(function(thisHour) {
     var hourField = $("<div>")
         .text(`${thisHour.hour}${thisHour.meridiem}`)
         .attr({
-            "class": "col-md-2 hour"
+            "class": "col-1 hour"
     });
 
     // creates schdeduler data
     var hourPlan = $("<div>")
         .attr({
-            "class": "col-md-9 description p-0"
+            "class": "col-10 description p-0"
         });
     var planData = $("<textarea>");
     hourPlan.append(planData);
     planData.attr("id", thisHour.id);
+
     if (thisHour.time < moment().format("HH")) {
         planData.attr ({
             "class": "past", 
@@ -140,7 +141,7 @@ myDay.forEach(function(thisHour) {
     var saveButton = $("<i class='far fa-save fa-lg'></i>")
     var savePlan = $("<button>")
         .attr({
-            "class": "col-md-1 saveBtn"
+            "class": "col-1 saveBtn"
     });
     savePlan.append(saveButton);
     hourRow.append(hourField, hourPlan, savePlan);
@@ -154,8 +155,8 @@ init();
 $(".saveBtn").on("click", function(event) {
     event.preventDefault();
     var saveIndex = $(this).siblings(".description").children(".future").attr("id");
-    myDay[saveIndex].reminder = $(this).siblings(".description").children(".future").val();
+    
     console.log(saveIndex);
-    saveReminders();
-    displayReminders();
+    saveTasks();
+    displayTasks();
 })
